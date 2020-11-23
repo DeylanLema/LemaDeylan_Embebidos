@@ -1,0 +1,123 @@
+/*
+ * DEBER 2
+ * DEYLAN LEMA
+ * CITEL
+ * EMBEBIDOS
+ */
+const int A=8; //decodificador
+const int B=9; //decodificador
+const int C=10; //decodificador
+const int D=11; //decodificador
+const int btn=7; //
+const int unidades=12; //pin de unidades
+const int decenas=13;//pin de decenas
+int cont; //contador
+int uni;//unidades
+int dec;//decenas
+int i=0;//ciclo for
+bool numerop;
+void setup() {
+pinMode(A,OUTPUT);
+pinMode(B,OUTPUT);
+pinMode(C,OUTPUT);
+pinMode(D,OUTPUT);
+pinMode(btn,INPUT);
+pinMode(unidades,OUTPUT);
+pinMode(decenas,OUTPUT);
+}
+
+void loop() {
+
+
+  if(digitalRead(btn)==HIGH )
+  delay(300);
+{
+  cont++;
+     for(cont=2; cont<99;cont++){
+           numerop = 1;
+          for(i=2;i<cont;i++){//numeros primos empiezan desde el 2
+            if(cont%i==0)//Si el residuo del numero ingresado es divisible para 2 se le descarta automaticamente
+            {  
+            numerop=0;
+            }
+        }
+            if(numerop==1){//Si el numero es un numero primo se procede a pasar al display
+              dec=cont/10;
+              uni= cont-(dec*10); 
+              }
+              digitalWrite (decenas,HIGH);
+              digitalWrite (unidades, LOW);
+              contador(dec); 
+              delay (300);
+
+              digitalWrite (decenas,LOW);
+              digitalWrite (unidades, HIGH);
+              contador(uni);
+              delay(300); 
+    }
+  }
+}
+void contador (int i){
+  switch(i){
+      case 0:
+      digitalWrite(A,LOW);
+      digitalWrite(B,LOW);
+      digitalWrite(C,LOW);
+      digitalWrite(D,LOW);
+      break;
+      case 1:
+      digitalWrite(A,HIGH);
+      digitalWrite(B,LOW);
+      digitalWrite(C,LOW);
+      digitalWrite(D,LOW);
+      break;
+      case 2:
+      digitalWrite(A,LOW);
+      digitalWrite(B,HIGH);
+      digitalWrite(C,LOW);
+      digitalWrite(D,LOW);
+      break;
+      case 3:
+      digitalWrite(A,HIGH);
+      digitalWrite(B,HIGH);
+      digitalWrite(C,LOW);
+      digitalWrite(D,LOW);    
+      break;
+      case 4:
+      digitalWrite(A,LOW);
+      digitalWrite(B,LOW);
+      digitalWrite(C,HIGH);
+      digitalWrite(D,LOW);    
+      break;
+      case 5:
+      digitalWrite(A,HIGH);
+      digitalWrite(B,LOW);
+      digitalWrite(C,HIGH);
+      digitalWrite(D,LOW);    
+      break;
+      case 6:
+      digitalWrite(A,LOW);
+      digitalWrite(B,HIGH);
+      digitalWrite(C,HIGH);
+      digitalWrite(D,LOW);    
+      break;
+      case 7:
+      digitalWrite(A,HIGH);
+      digitalWrite(B,HIGH);
+      digitalWrite(C,HIGH);
+      digitalWrite(D,LOW);    
+      break;
+      case 8:
+      digitalWrite(A,LOW);
+      digitalWrite(B,LOW);
+      digitalWrite(C,LOW);
+      digitalWrite(D,HIGH);    
+      break;
+      case 9:
+      digitalWrite(A,HIGH);
+      digitalWrite(B,LOW);
+      digitalWrite(C,LOW);
+      digitalWrite(D,HIGH);    
+      break;
+      }
+  }
