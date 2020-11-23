@@ -1,0 +1,107 @@
+/*
+ * DEBER 1
+ * DEYLAN LEMA
+ * CITEL
+ * EMBEBIDOS
+ */
+const int led1= 8; //Led 1
+const int led2= 9;//Led 2
+const int led3= 10;//Led 3
+const int led4= 11;//Led 4
+const int led5= 12;//Led 5
+const int led6= 13;//Led 6
+int i=0;// variable for
+const int sw1=4;//Switch 1
+const int sw2=5;//Switch 2
+const int sw3=6;//Switch 3
+const int sw4=7;//Switch 4
+
+void setup() {
+  pinMode(led1,OUTPUT);// pin 8 como salida
+  pinMode(led2,OUTPUT);// pin 9 como salida
+  pinMode(led3,OUTPUT);// pin 10 como salida
+  pinMode(led4,OUTPUT);// pin 11 como salida
+  pinMode(led5,OUTPUT);// pin 12 como salida
+  pinMode(led6,OUTPUT);// pin 13 como salida
+  pinMode(sw1,INPUT);// pin 4 como entrada
+  pinMode(sw2,INPUT);// pin 5 como entrada
+  pinMode(sw3,INPUT);// pin 6 como entrada
+  pinMode(sw4,INPUT);// pin 7 como entrada
+}
+
+void loop() {
+//JUEGO 1
+if(digitalRead(sw1)==HIGH && digitalRead(sw2)==LOW && digitalRead(sw3)==LOW && digitalRead(sw4)==LOW){//Switches 1 0 0 0
+  for(i=0;i<10;i++){
+    delay(300);
+     digitalWrite(led2,HIGH);
+     digitalWrite(led4,HIGH);
+     digitalWrite(led6,HIGH);
+    delay(300);
+    digitalWrite(led2,LOW);
+    digitalWrite(led4,LOW);
+    digitalWrite(led6,LOW);
+    delay(300);   
+  }
+}
+//JUEGO 2
+if(digitalRead(sw1)==LOW && digitalRead(sw2)==HIGH && digitalRead(sw3)==LOW && digitalRead(sw4)==LOW){//Switches 0 1 0 0
+  for(i=0;i<10;i++){
+    delay(300);
+     digitalWrite(led1,HIGH);
+     digitalWrite(led3,HIGH);
+     digitalWrite(led5,HIGH);
+    delay(300);
+    digitalWrite(led1,LOW);
+    digitalWrite(led3,LOW);
+    digitalWrite(led5,LOW);
+    delay(300);   
+  }
+}
+//JUEGO 3
+if(digitalRead(sw1)==LOW && digitalRead(sw2)==LOW && digitalRead(sw3)==HIGH && digitalRead(sw4)==LOW){//Switches 0 0 1 0
+  for(i=0;i<4;i++){
+    delay(300);
+     digitalWrite(led1,HIGH);
+     delay(300);
+     digitalWrite(led1,LOW);
+     digitalWrite(led2,HIGH);
+     delay(300);
+     digitalWrite(led2,LOW);
+     digitalWrite(led3,HIGH);
+     delay(300);
+     digitalWrite(led3,LOW);
+     digitalWrite(led4,HIGH);
+     delay(300);
+     digitalWrite(led4,LOW);
+     digitalWrite(led5,HIGH);
+     delay(300);
+     digitalWrite(led5,LOW);
+     digitalWrite(led6,HIGH);
+     delay(300);
+     digitalWrite(led6,LOW);
+    delay(300);   
+  }
+}
+//JUEGO 4
+if(digitalRead(sw1)==LOW && digitalRead(sw2)==LOW && digitalRead(sw3)==LOW && digitalRead(sw4)==HIGH){//Switches 0 0 0 1
+  for(i=0;i<10;i++){
+    delay(300);
+  digitalWrite(led1,HIGH);
+  digitalWrite(led6,HIGH);
+  delay(300);  
+  digitalWrite(led1,LOW);
+  digitalWrite(led6,LOW);
+  digitalWrite(led2,HIGH);
+  digitalWrite(led5,HIGH);
+  delay(300);
+  digitalWrite(led2,LOW);
+  digitalWrite(led5,LOW);
+  digitalWrite(led3,HIGH);
+  digitalWrite(led4,HIGH);
+  delay(300);
+  digitalWrite(led3,LOW);
+  digitalWrite(led4,LOW);
+  }
+}
+}
