@@ -1,0 +1,158 @@
+#include <LiquidCrystal.h>
+#include <Keypad.h>
+#define TAM 4
+
+LiquidCrystal lcd(A0,A1,13,12,11,10);
+const byte rows=4;
+const byte cols=4;
+char keys[rows][cols]={
+  {'1','2','3','A'},
+  {'4','5','6','B'},
+  {'7','8','9','C'},
+  {'*','0','#','D'}
+  };
+  byte rowPins[rows]={9,8,7,6};
+  byte colPins[cols]={5,4,3,2};
+  int Li          = 16;
+int Lii         = 0;
+int Ri          = -1;
+int Rii         = -1;
+//-------------------------
+
+Keypad keypad=Keypad(makeKeymap(keys), rowPins, colPins,rows, cols);
+const char btn=A2;
+int digito=0;
+int claveIngresada[TAM]={0};
+const char* ptrNombres[TAM]={"ESTEBAN CABEZAS","DEYLAN LEMA"};
+int listaClaves[TAM][TAM]={{2,3,8,9},{1,7,2,7}};
+int cont=0;
+int comparaClave(int*ptrClave, int ptrListaClaves[][4]);
+int numero =0;
+
+void setup(){
+  lcd.begin(16,2);
+  pinMode(btn,INPUT);
+  lcd.setCursor(0,0);
+  lcd.print("INGRESE LA CLAVE");
+  
+  
+  }
+void loop(){
+
+
+  if(digitalRead(btn)==HIGH){
+  delay(300);
+  for (int i = 0; i <= 30; i++) {
+    lcd.clear();
+        lcd.setCursor(0, 0);
+        lcd.print(Scroll_LCD_Left(" Ingresados:  ESTEBAN CABEZAS - DEYLAN LEMA"));
+        lcd.setCursor(0, 1);
+        lcd.print(Scroll_LCD_Left("No ingresados: CARLA LARA - DANY ORTIZ"));
+        delay(200);
+        lcd.clear();
+       
+  }
+   
+  }
+   lcd.setCursor(0,0);
+  lcd.print("INGRESE LA CLAVE");
+  lcd.setCursor(0,1);
+  digito=keypad.waitForKey();
+  lcd.setCursor(0,1);
+  lcd.print("******");
+
+  
+  if(digito=='*'){
+    lcd.print("                  ");
+    lcd.setCursor(0,1);
+    
+    cont=0;
+    }
+    else{
+      digito-=48;
+      claveIngresada[cont]=digito;
+      cont++;
+      if(cont==4){
+        
+        int registro=comparaClave(claveIngresada,listaClaves);
+        if(registro!=-1){
+          Clear_Scroll_LCD_Left();
+      for (int i = 0; i <= 26; i++) {
+        lcd.setCursor(0, 0);
+        lcd.print(Scroll_LCD_Left(" BIENVENIDO"));
+        lcd.setCursor(0, 1);
+        lcd.print(Scroll_LCD_Left(ptrNombres[registro]));
+        delay(200);
+        lcd.clear();
+        }
+          //lcd.print("BIENVENIDO ");
+          //lcd.print(ptrNombres[registro]);
+          }
+          
+          else{
+            lcd.print("No existe");
+          }
+          
+          cont=0;
+          delay(1000);
+          lcd.setCursor(0,1);
+          lcd.print("                          ");
+        }
+        delay(100);
+      }
+  
+}
+  
+  int comparaClave(int* ptrClave, int ptrListaClaves[][4]){
+    for(int registro=0; registro<TAM;++registro){
+      for(int digito=0; digito<TAM;++digito){
+        if(ptrClave[digito]!=ptrListaClaves[registro][digito]){
+          break;
+          }
+          if(digito==TAM-1) return registro;
+      
+      
+      }
+    
+    }
+    return -1;
+  }
+  String Scroll_LCD_Left(String StrDisplay){
+  String result;
+  String StrProcess = "                        " + StrDisplay + "                       ";
+  result = StrProcess.substring(Li,Lii);
+  Li++;
+  Lii++;
+  if (Li>StrProcess.length()){
+    Li=16;
+    Lii=0;
+  }
+  return result;
+}
+
+ 
+
+void Clear_Scroll_LCD_Left(){
+  Li=16;
+  Lii=0;
+}
+//----------------------------------
+String Scroll_LCD_Right(String StrDisplay){
+  String result;
+  String StrProcess = "                " + StrDisplay + "                ";
+  if (Rii<1){
+    Ri  = StrProcess.length();
+    Rii = Ri-16;
+  }
+  result = StrProcess.substring(Rii,Ri);
+  Ri--;
+  Rii--;
+  return result;
+}
+
+ 
+
+void Clear_Scroll_LCD_Right(){
+  Ri=-1;
+  Rii=-1;
+}
