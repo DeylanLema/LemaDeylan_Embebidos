@@ -1,0 +1,161 @@
+/*
+ * UNIVERSIDAD TECNICA DEL NORTE
+ * DEYLAN LEMA
+ * EMBEBIDOS
+ * 5TO CITEL
+ */
+#include <Wire.h>
+#include<LiquidCrystal.h> 
+LiquidCrystal lcd(12, 11,7,6,5,4);
+int i;
+String data;
+String dato;
+char num;
+void setup() {
+  lcd.begin(16,2);
+  Wire.begin(4);
+  Wire.onReceive(receiveEvent); //Evento de recepcion de mesajes
+  lcd.setCursor(0,0);
+  Serial.begin(9600);// Inicio de cx serial
+}
+void loop() {
+}
+void receiveEvent(int bytes){
+  while(Wire.available()){
+    if(Serial.available()){
+      data = Serial.readString();
+      dato.toLowerCase();
+      //lcd.clear();
+      //lcd.print(data);   
+  }
+      char imp=Wire.read();
+      dato.toLowerCase();
+      dato=dato+imp;
+      //lcd.print(dato);
+      String a1="";
+      for(i=0;i<=dato.length();i++){
+      switch(dato[i]){
+        case 'a':
+         a1=a1+"@";
+          //Serial.print(a1);
+          //lcd.setCursor(0,2);
+          //lcd.print(a);
+        break;
+        case 'b':
+          a1=a1+"b";
+        break;
+        case 'c':
+          a1=a1+"c";
+        break;
+        case 'd':
+          a1=a1+"d";
+        break;
+        case 'e':
+          a1=a1+"#";
+        break;
+        case 'f':
+          a1=a1+"f";
+        break;
+        case 'g':
+          a1=a1+"g";
+        break;
+        case 'h':
+          a1=a1+"h";
+        break;
+        case 'i':
+          a1=a1+"!";
+        break;
+        case 'j':
+          a1=a1+"j";
+        break;
+        case 'k':
+          a1=a1+"k";
+        break;
+        case 'l':
+          a1=a1+"l";
+        break;
+        case 'm':
+          a1=a1+"m";
+        break;
+        case 'n':
+          a1=a1+"n";
+        break;
+        case 'o':
+          a1=a1+"*";
+        break;
+        case 'p':
+          a1=a1+"p";
+        break;
+        case 'q':
+          a1=a1+"q";
+        break;
+        case 'r':
+          a1=a1+"r";
+        break;
+        case 's':
+          a1=a1+"s";
+        break;
+        case 't':
+          a1=a1+"t";
+        break;
+        case 'u':
+          a1=a1+"$";
+        break;
+        case 'v':
+          a1=a1+"v";
+        break;
+        case 'w':
+          a1=a1+"w";
+        break;
+        case 'x':
+          a1=a1+"x";
+        break;
+        case 'y':
+          a1=a1+"y";
+        break;
+        case 'z':
+          a1=a1+"z";
+        break;
+        case '1':
+          a1=a1+"1";
+        break;
+        case '2':
+          a1=a1+"2";
+        break;
+        case '3':
+          a1=a1+"3";
+        break;
+        case '4':
+          a1=a1+"4";
+        break;
+        case '5':
+          a1=a1+"5";
+        break;
+        case '6':
+          a1=a1+"6";
+        break;
+        case '7':
+          a1=a1+"7";
+        break;
+        case '8':
+          a1=a1+"8";
+        break;
+        case '9':
+          a1=a1+"9";
+        break;
+        case '0':
+          a1=a1+"0";
+        break;
+        
+        default:
+        break;
+      }
+      }
+      lcd.clear();
+      lcd.setCursor(0,0);
+      lcd.print(dato);
+      lcd.setCursor(0,1);
+      lcd.println(a1);
+  }
+  
+}
