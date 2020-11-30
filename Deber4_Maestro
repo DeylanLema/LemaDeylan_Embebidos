@@ -1,0 +1,23 @@
+/*
+ * UNIVERSIDAD TECNICA DEL NORTE
+ * DEYLAN LEMA
+ * EMBEBIDOS
+ * 5TO CITEL
+ */
+#include<Wire.h> //libreria I2C
+char dato;  //variable de almacenamiento de datos
+void setup() { 
+  Wire.begin(); //inicia cx i2c
+  Serial.begin(9600);// inicia cx serial
+}
+
+void loop() {
+  if(Serial.available()>0){ //verifica el puerto de cx
+    dato=Serial.read(); // almacena el dato en variable 
+    Wire.beginTransmission(4); // empieza cx i2c
+    Wire.write(dato); //envia dato
+    Wire.endTransmission();
+    
+  }
+
+}
