@@ -1,0 +1,260 @@
+/*
+ * UNIVERSIDAD TECNICA DEL NORTE
+ * DEYLAN LEMA
+ * 5TO CITEL
+ * EMBEBIDOS
+ */
+ const int A=11; //decodificador
+const int B=10; //decodificador
+const int C=9; //decodificador
+const int D=8; //decodificador
+int si=0;
+int no=0;
+ int d=0;
+ int f=0;
+char dato; //variable de recepcion de strings
+int tam;//tam de caracteres
+int i=0;//variable de recorrido
+String salida;//mensaje codificaado
+int j=0;//variable de confirmacion de vocales
+
+void setup() {
+  pinMode(A,OUTPUT);
+pinMode(B,OUTPUT);
+pinMode(C,OUTPUT);
+pinMode(D,OUTPUT);
+  Serial.begin(9600);
+    randomSeed(4);
+}
+
+void loop() {
+int d=0;
+       digitalWrite(contador,HIGH);
+       contador(d);
+       digitalWrite(contador,HIGH);
+       contador(f);
+       delay(200);
+    for(;i<5;i++){
+        
+    if(i>8){
+      Serial.println("RESULTADO");
+      Serial.println("ingrese nuevamente vocales a codificar");
+      }else{
+       int numero=(random(1,9));
+       delay(1000);
+       int s=0;
+        int n=0;
+            switch(numero){//evaluo por casos / vocales
+              
+                case 1:
+                 Serial.println("TIENES MAS DE 18 AñOS?");
+                 delay(1000);
+                 Serial.println("");
+                 dato=Serial.read();
+                 Serial.println(char(dato));
+                 
+                break;
+                case 2:
+                 Serial.println("ERES HOMBRE?");
+                 delay(1000);
+                 Serial.println("");
+                 dato=Serial.read();
+                 Serial.println(char(dato));
+                break;
+                case 3:
+                 Serial.println("TE GUSTA LAS MASCOTAS?");
+                 delay(1000);
+                 Serial.println("");
+                 dato=Serial.read();
+                 Serial.println(char(dato));
+                break;
+                case 4:
+                 Serial.println("HACES EJERCICIO?");
+                 delay(1000);
+                 Serial.println("");
+                 dato=Serial.read();
+                 Serial.println(char(dato));
+                break;
+                case 5:
+                 Serial.println("TIENES DIETA SALUDABLE?");
+                 delay(1000);
+                 Serial.println("");
+                 dato=Serial.read();
+                 Serial.println(char(dato));
+                break;
+                case 6:
+                 Serial.println("VIVES EN IBARRA?");
+                 delay(1000);
+                 Serial.println("");
+                 dato=Serial.read();
+                 Serial.println(char(dato));
+                break;
+                case 7:
+                 Serial.println("TIENES HERMANOS?");
+                 delay(1000);
+                 Serial.println("");
+                 dato=Serial.read();
+                 Serial.println(char(dato));
+                break;
+                case 8:
+                 Serial.println("TE GUSTA EL FUTBOL?");
+                 delay(1000);
+                 Serial.println("");
+                 dato=Serial.read();
+                 Serial.println(char(dato));
+                break;
+              }
+
+            if(dato=='s'){
+              d=d+1;
+              }
+              if(dato=='n'){
+              f=f+1;
+              }
+          }
+        }
+        
+             
+        
+   
+       Serial.println(String("Numero de Si ")+int(d)); 
+       digitalWrite(contador,HIGH);
+       contador(d);
+       delay(2000);
+       Serial.println(String("Numero de No ")+int(f)); 
+       digitalWrite(contador1,HIGH);
+       contador(f);
+       delay(2000);
+       delay(7000);
+       i=0;
+       d=0;
+       f=0;
+}
+void contador (int d){
+  switch(d){
+      case 0:
+      digitalWrite(A,LOW);
+      digitalWrite(B,LOW);
+      digitalWrite(C,LOW);
+      digitalWrite(D,LOW);
+      break;
+      case 1:
+      digitalWrite(A,HIGH);
+      digitalWrite(B,LOW);
+      digitalWrite(C,LOW);
+      digitalWrite(D,LOW);
+      break;
+      case 2:
+      digitalWrite(A,LOW);
+      digitalWrite(B,HIGH);
+      digitalWrite(C,LOW);
+      digitalWrite(D,LOW);
+      break;
+      case 3:
+      digitalWrite(A,HIGH);
+      digitalWrite(B,HIGH);
+      digitalWrite(C,LOW);
+      digitalWrite(D,LOW);    
+      break;
+      case 4:
+      digitalWrite(A,LOW);
+      digitalWrite(B,LOW);
+      digitalWrite(C,HIGH);
+      digitalWrite(D,LOW);    
+      break;
+      case 5:
+      digitalWrite(A,HIGH);
+      digitalWrite(B,LOW);
+      digitalWrite(C,HIGH);
+      digitalWrite(D,LOW);    
+      break;
+      case 6:
+      digitalWrite(A,LOW);
+      digitalWrite(B,HIGH);
+      digitalWrite(C,HIGH);
+      digitalWrite(D,LOW);    
+      break;
+      case 7:
+      digitalWrite(A,HIGH);
+      digitalWrite(B,HIGH);
+      digitalWrite(C,HIGH);
+      digitalWrite(D,LOW);    
+      break;
+      case 8:
+      digitalWrite(A,LOW);
+      digitalWrite(B,LOW);
+      digitalWrite(C,LOW);
+      digitalWrite(D,HIGH);    
+      break;
+      case 9:
+      digitalWrite(A,HIGH);
+      digitalWrite(B,LOW);
+      digitalWrite(C,LOW);
+      digitalWrite(D,HIGH);    
+      break;
+      }
+  }
+  void contador1 (int f){
+  switch(f){
+      case 0:
+      digitalWrite(A,LOW);
+      digitalWrite(B,LOW);
+      digitalWrite(C,LOW);
+      digitalWrite(D,LOW);
+      break;
+      case 1:
+      digitalWrite(A,HIGH);
+      digitalWrite(B,LOW);
+      digitalWrite(C,LOW);
+      digitalWrite(D,LOW);
+      break;
+      case 2:
+      digitalWrite(A,LOW);
+      digitalWrite(B,HIGH);
+      digitalWrite(C,LOW);
+      digitalWrite(D,LOW);
+      break;
+      case 3:
+      digitalWrite(A,HIGH);
+      digitalWrite(B,HIGH);
+      digitalWrite(C,LOW);
+      digitalWrite(D,LOW);    
+      break;
+      case 4:
+      digitalWrite(A,LOW);
+      digitalWrite(B,LOW);
+      digitalWrite(C,HIGH);
+      digitalWrite(D,LOW);    
+      break;
+      case 5:
+      digitalWrite(A,HIGH);
+      digitalWrite(B,LOW);
+      digitalWrite(C,HIGH);
+      digitalWrite(D,LOW);    
+      break;
+      case 6:
+      digitalWrite(A,LOW);
+      digitalWrite(B,HIGH);
+      digitalWrite(C,HIGH);
+      digitalWrite(D,LOW);    
+      break;
+      case 7:
+      digitalWrite(A,HIGH);
+      digitalWrite(B,HIGH);
+      digitalWrite(C,HIGH);
+      digitalWrite(D,LOW);    
+      break;
+      case 8:
+      digitalWrite(A,LOW);
+      digitalWrite(B,LOW);
+      digitalWrite(C,LOW);
+      digitalWrite(D,HIGH);    
+      break;
+      case 9:
+      digitalWrite(A,HIGH);
+      digitalWrite(B,LOW);
+      digitalWrite(C,LOW);
+      digitalWrite(D,HIGH);    
+      break;
+      }
+  }
