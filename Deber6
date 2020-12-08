@@ -1,0 +1,214 @@
+const int A=13; //decodificador
+const int B=12; //decodificador
+const int C=11; //decodificador
+const int D=10; //decodificador
+const int E=9; //decodificador
+const int F=8; //decodificador
+const int G=7; //decodificador
+const int H=6; //decodificador
+const int unidades=4;
+const int decenas=5;
+const int unidades1=3;
+const int decenas1=ADEN;
+const int led1=7;
+int segundos=0;
+int minutos=0;
+int horas=0;
+int cont;
+int uni;
+int dec;
+int on=0;
+int i=0;
+int j;
+int sig=0;
+String dato;
+#include<MsTimer2.h>
+void setup() {
+Serial.begin(9600);
+pinMode(A,OUTPUT);
+pinMode(B,OUTPUT);
+pinMode(C,OUTPUT);
+pinMode(D,OUTPUT);
+pinMode(E,OUTPUT);
+pinMode(F,OUTPUT);
+pinMode(G,OUTPUT);
+pinMode(H,OUTPUT);
+pinMode(led1,OUTPUT);
+pinMode(unidades,OUTPUT);
+pinMode(decenas,OUTPUT);
+attachInterrupt(0,activacion,LOW);
+attachInterrupt(1,contador,LOW);
+ MsTimer2::set(1000,reloj);
+  MsTimer2::start();
+}
+
+void loop() {
+  if(on==2){
+    delay(200);
+  String dato=Serial.readString();
+  int sig=dato.toInt();
+    int min0=dato.toInt();
+    if(min0<10){
+      uni=min0;
+    }else{
+      dec=min0/10;
+      uni=min0-dec*10;
+      }
+      for(j=0;j<10;j++){
+      digitalWrite(unidades,HIGH); 
+      digitalWrite(decenas,LOW); 
+      contador(uni);
+      delay(200);
+      digitalWrite(unidades,LOW);
+      digitalWrite(decenas,HIGH);
+      contador(dec);
+      delay(200);
+      }
+      digitalWrite(decenas,LOW);
+      dec=0;
+      uni=0;
+      delay(200);
+      Serial.println(sig);
+  }
+
+      if(on==3){
+      String dato=Serial.readString();
+  int sig1=dato.toInt();
+    int min0=dato.toInt();
+    if(min0<10){
+      uni=min0;
+    }else{
+      dec=min0/10;
+      uni=min0-dec*10;
+      }
+      for(j=0;j<10;j++){
+      digitalWrite(unidades,HIGH); 
+      digitalWrite(decenas,LOW); 
+      contador(uni);
+      delay(300);
+      digitalWrite(unidades,LOW);
+      digitalWrite(decenas,HIGH);
+      contador(dec);
+      delay(300);
+      }
+      dec=0;
+      uni=0;
+      digitalWrite(decenas,LOW);
+      Serial.println(sig1);
+    }
+if(minutos==0&& segundos==5)
+digitalWrite(led1,HIGH);
+delay(3000);
+digitalWrite(led1,LOW);  
+  }
+   
+
+void contador (int i){
+  switch(i){
+      case 0:
+      digitalWrite(A,LOW);
+      digitalWrite(B,LOW);
+      digitalWrite(C,LOW);
+      digitalWrite(D,LOW);
+      break;
+      case 1:
+      digitalWrite(A,HIGH);
+      digitalWrite(B,LOW);
+      digitalWrite(C,LOW);
+      digitalWrite(D,LOW);
+      break;
+      case 2:
+      digitalWrite(A,LOW);
+      digitalWrite(B,HIGH);
+      digitalWrite(C,LOW);
+      digitalWrite(D,LOW);
+      break;
+      case 3:
+      digitalWrite(A,HIGH);
+      digitalWrite(B,HIGH);
+      digitalWrite(C,LOW);
+      digitalWrite(D,LOW);    
+      break;
+      case 4:
+      digitalWrite(A,LOW);
+      digitalWrite(B,LOW);
+      digitalWrite(C,HIGH);
+      digitalWrite(D,LOW);    
+      break;
+      case 5:
+      digitalWrite(A,HIGH);
+      digitalWrite(B,LOW);
+      digitalWrite(C,HIGH);
+      digitalWrite(D,LOW);    
+      break;
+      case 6:
+      digitalWrite(A,LOW);
+      digitalWrite(B,HIGH);
+      digitalWrite(C,HIGH);
+      digitalWrite(D,LOW);    
+      break;
+      case 7:
+      digitalWrite(A,HIGH);
+      digitalWrite(B,HIGH);
+      digitalWrite(C,HIGH);
+      digitalWrite(D,LOW);    
+      break;
+      case 8:
+      digitalWrite(A,LOW);
+      digitalWrite(B,LOW);
+      digitalWrite(C,LOW);
+      digitalWrite(D,HIGH);    
+      break;
+      case 9:
+      digitalWrite(A,HIGH);
+      digitalWrite(B,LOW);
+      digitalWrite(C,LOW);
+      digitalWrite(D,HIGH);    
+      break;
+      }
+  }
+void activacion(){
+  //NO FUNCIONA DELAY
+  switch(on){
+    case 0:
+    Serial.println("INICIO DE SISTEMA");
+    on++;
+    break;
+    case 1:
+    Serial.println();
+    Serial.println("Ingrese el valor de las Horas");
+    on++;
+    break;
+    case 2:
+    Serial.println();
+    Serial.println("Ingrese el valor de los Minutos");
+    on++;
+    break;
+    case 3:
+    Serial.println();
+    Serial.println("FIN DE SISTEMA");
+    cont=0;
+    i=0;
+    j=0;
+    on=0;
+    break;
+    }
+}
+
+void reloj(){
+  
+  if(segundos<59)
+  segundos++;
+  else{
+    segundos=0;
+    if(minutos<59)
+      minutos++;
+  else{
+      minutos=0;
+        if(horas<24)
+          horas++;
+          else
+            horas=0;
+      }
+   }
+}  
