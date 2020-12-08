@@ -1,0 +1,26 @@
+#include <EEPROM.h>
+#include<LiquidCrystal.h>
+LiquidCrystal lcd(13,12,11,10,9,8);
+int i=0;
+String f="4563";
+String valor_nueva;
+
+
+void setup() {
+  Serial.begin(9600);
+//EEPROM.put(0,f);
+Serial.println("CONTRASENA ACTUAL :");
+Serial.println(EEPROM.get(0,f));
+}
+
+void loop() {
+  if(f=="4563")
+  delay(4000);
+  valor_nueva="1111";
+  f=valor_nueva;
+  //EEPROM.update(0,f.toInt());
+  Serial.println("CONTRASENA NUEVA :");
+  Serial.println(EEPROM.get(0,f));
+  delay(7000);
+  
+}
