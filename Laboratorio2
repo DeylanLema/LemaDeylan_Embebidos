@@ -1,0 +1,152 @@
+#include <LiquidCrystal.h>
+#include<MsTimer2.h>
+LiquidCrystal lcd(13,12,11,10,9,8);
+int segundos=0;
+int minutos=0;
+int horas=0;
+const int btn=7;
+const int btn1=6;
+int on=0;
+int valor;
+String dato;
+int cont;//interrupcion 1
+int i;//aux
+int j=0;//aux
+const int leds[4]={3,4,5,6};
+int randomNumber;
+int conversor;
+int conversor1;
+int s1;
+int s2;
+int s3;
+
+void setup() {
+  for(i=0;i<4;i++){
+  pinMode(leds[i],OUTPUT);
+  }
+  i=0;
+  
+  lcd.begin(16,2);
+  MsTimer2::set(1000,reloj);
+  MsTimer2::start();
+  Serial.begin(9600);
+  attachInterrupt(0,activacion,LOW);
+  attachInterrupt(1,contador,LOW);
+  conversor=analogRead(0);
+  conversor1=analogRead(1);
+  s1=analogRead(2);
+  s2=analogRead(3);
+  s3=analogRead(4);
+  
+}
+
+void loop() {
+  
+  if(on==2){
+    s1=analogRead(2);
+  s2=analogRead(3);
+  s3=analogRead(4);
+  
+    switch(cont){
+    case 1:
+    for(;i<20;i++){
+      int randomNumber = random(1,4);
+      j=randomNumber;
+        digitalWrite(leds[j],HIGH);
+        delay(500);
+        digitalWrite(leds[j],LOW);
+        delay(500);
+        }
+    break;
+    case 2:
+    
+     conversor=analogRead(0);
+     conversor1=analogRead(1);
+     conversor=map(conversor,0,1023,1,23);//HORAS
+     conversor1=map(conversor1,0,1023,1,59);//MINUTOS
+     delay(1000);
+     minutos=conversor1;
+     horas=conversor;
+        if(minutos<59)
+          minutos++;
+        else{
+          minutos=0;
+            if(horas<23)
+              horas++;
+                else
+                   horas=0;
+             } 
+     minutos=minutos;
+     horas=horas;       
+     break;
+     case 3:
+     
+     s1=map(s1,0,1023,0,100);
+     s2=map(s2,0,1023,0,100);
+     s3=map(s3,0,1023,0,100);
+     if(s1>50){
+      Serial.println("SENSOR 1 ACTIVADO");
+      Serial.println();
+      }
+      if(s2>50){
+      Serial.println("SENSOR 2 ACTIVADO");
+      Serial.println();
+      }
+      if(s3>50){
+      Serial.println("SENSOR 3 ACTIVADO");
+      Serial.println();
+      }
+      delay(4000);
+     break;
+    }
+}
+}
+void reloj(){
+  
+
+    if(minutos<59)
+      minutos++;
+  else{
+      minutos=0;
+        if(horas<24)
+          horas++;
+          else
+            horas=0;
+      
+   }
+   lcd.clear();
+      lcd.setCursor(0,0);
+      lcd.print(String(horas)+String(" : ")+String(minutos)) ;  
+
+
+  }
+void activacion(){
+  //NO FUNCIONA DELAY
+  switch(on){
+    case 0:
+    Serial.println("INICIO DE SISTEMA");
+    Serial.println("Ingrese el # de veces a jugar");
+    on++;
+    break;
+    case 1:
+    Serial.println("Inicio de Juego");
+    on++;
+    break;
+    case 2:
+    on++;
+    break;
+    case 3:
+    Serial.println("Fin de Juego");
+    cont=0;
+    i=0;
+    j=0;
+    on=0;
+    break;
+    }
+}
+void contador(){
+  if(on==1){//validar interrupcion0
+    cont++;
+    Serial.println(String("Modo de Juego :")+String(cont));
+    }
+}
