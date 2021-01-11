@@ -1,0 +1,39 @@
+/*LEMA DEYLAN
+  SITEMAS EMBEBIDOS
+  TAREA 10
+  CITEL
+*/
+int y=100;
+int x=100;
+void setup(){
+  size(900,600);
+  background(#7D84FC);
+  fill(#0F08FF);
+  stroke(#8B08FF); //linea
+  strokeWeight(5);
+  ellipse(x,y,40,40);
+}
+void draw(){
+switch(key){
+case 'd':
+x=x+3;
+background(#7D84FC);
+ellipse(x,y,40,40);
+break;
+case 's':
+background(#7D84FC);
+y=y+3;
+ellipse(x,y,40,40);
+break;
+case 'a':
+background(#7D84FC);
+x=x-3;
+ellipse(x,y,40,40);
+break;
+case 'w':
+background(#7D84FC);
+y=y-3;
+ellipse(x,y,40,40);
+break;
+}
+}
