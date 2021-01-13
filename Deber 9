@@ -1,0 +1,48 @@
+#include <avr/wdt.h>
+#include <MsTimer2.h>
+int cont = 0; //variable de conteo
+int up = 0;//variable salto en switch
+int aux = 0; //auxiliar
+int t1 = 0; //tiempo 1
+int t2= 1; //tiempo 2
+
+void setup() {
+  Serial.begin(9600);
+  Serial.println("INICIO"); //mensaje de salida inicio
+  MsTimer2::set(1000, reset); //reseteo
+  attachInterrupt(0, conf, LOW);//interrupcion para el uso del Timer
+}
+
+void loop() {
+  if (up == 1) {
+    aux = analogRead(0);
+    t1 = map(aux, 0, 1023, 0, 60); //cambio de variable de 0 a 60 sec
+    delay(50);
+    if (t2 != t1) {
+      Serial.println(String("Tiempo: ") + String(t1));
+    }
+    t2 = t1;
+  }
+}
+void conf() {
+  switch (up) {
+    case 0:
+      Serial.println("Inicio del Programa");
+      Serial.println("Seleccione el tiempo de reinicio wdt");
+      up++;
+      break;
+
+    case 1:
+      Serial.println(String("Tiempo de reinicio : ") + String(t1) + String(" seg"));
+      MsTimer2::start();
+      up = 0;
+      break;
+  }
+}
+void reset() {
+  cont++;
+  if (cont == t1) {
+    wdt_disable();
+    wdt_enable(WDTO_500MS);
+  }
+}
