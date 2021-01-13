@@ -1,0 +1,56 @@
+#include<avr/power.h>
+#include<avr/sleep.h>
+#include<avr/wdt.h>
+#include<MsTimer2.h>
+int puls = 0; //variable del pulsador
+int t = 0; //variable para el tiempo
+int cont = 0; //variable contador
+void setup() {
+  Serial.begin(9600);
+  MsTimer2::set(1000, reloj); //configuracion del reloj a 1s
+  attachInterrupt(0, activacion, LOW); //llamado a evento de reloj mediante interrupcion
+}
+
+void loop() {
+  delay(1000);
+}
+
+
+void reloj() {
+  if (cont != 1) { //Si el contador es diferente de 1 el adc se apaga
+    power_adc_disable();
+  }
+  else {
+    power_adc_enable();//adc conectado
+    delay(60);
+    Serial.println(String("Leer :") + String(analogRead(0)));
+  }
+
+  if (cont == 60) {
+    cont = 0;
+  }
+
+  cont++;
+  power_adc_disable();
+}
+
+
+void activacion() { //metodo para activacion del Sistema
+  switch (puls) {
+    case 0:
+      t = 60; //tiempo de sistema en reinicio
+      Serial.println("Sistema Prendido"); //mensaje de sistema encendido
+      MsTimer2::start(); //Inicio del reloj
+      puls++; //pulsador para cambiar a case 2
+      break;
+
+    case 1:
+      Serial.println("Sistema Apagado");//mensaje de sistema apagado
+      t = 0; //tiempo en cero
+      puls = 0;//pulsador en reinicio
+      cont = 0;//contador en cero
+      MsTimer2::stop();//reloj detenido
+      power_adc_disable();//fuente adc apagada
+      break;
+  }
+}
