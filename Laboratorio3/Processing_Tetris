@@ -1,0 +1,95 @@
+import ddf.minim.*;
+import processing.serial.*;
+Grid grid;
+Shape shape, onDeck;
+Background bg; 
+Serial port;
+Minim tetris;
+String dato;
+
+AudioPlayer play1;
+void setup() {
+  size(720, 720);
+  port=new Serial(this, "COM10", 9600);
+  grid=new Grid();
+  shape=new Shape();
+  shape.isActive=true;
+  onDeck=new Shape();
+  bg=new Background();
+  textSize(36);
+  tetris=new Minim(this);
+  play1=tetris.loadFile("tetrismusic.wav");
+}
+
+void draw() {
+  //background(0);
+  if (play1.isPlaying()) {
+  } else {
+    play1.rewind();
+    play1.play();
+  }
+
+  bg.display();
+  grid.display();
+  drawShapes();
+  fill(0);
+  text("PUNTUACION:" +bg.score, width/2+55, height-100);
+  fill(255);
+  text("PUNTUACION:" +bg.score, width/2+60, height-95);
+}
+void drawShapes() {
+  shape.display();
+  onDeck.showOnDeck();
+  if (shape.checkBack(bg)) {
+    shape.moveDown(1);
+  } else {
+    shape.isActive=false;
+  }
+  if (!shape.isActive) {
+    bg.writeShape(shape);
+    shape=onDeck;
+    shape.isActive=true;
+    onDeck=new Shape();
+  }
+}
+void serialEvent(Serial port) {
+  dato=port.readString();
+  println(dato);
+  switch(dato){
+    case "D":
+    shape.moveShape("RIGHT");
+  break;
+  case "A":
+    shape.moveShape("LEFT");
+  break;
+  case "S":
+    shape.moveShape("DOWN");
+  break;
+  case "W":
+    shape.rotate();
+    shape.rotate();
+    shape.rotCount++;
+  break;
+  
+}
+}
+void keyPressed() {
+  if (keyCode==RIGHT) {
+    shape.moveShape("RIGHT");
+  }
+  if (keyCode==LEFT) {
+    shape.moveShape("LEFT");
+  }
+  if (keyCode==DOWN) {
+    shape.moveShape("DOWN");
+  }
+
+}
+
+void keyReleased() {
+  if (keyCode==UP) {
+    shape.rotate();
+    shape.rotate();
+  }
+  shape.rotCount++;
+}
