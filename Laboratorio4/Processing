@@ -1,0 +1,233 @@
+/*
+DEYLAN LEMA
+ SISTEMAS EMBEBIDOS
+ 5TO CITEL
+ */
+import processing.serial.*;
+import controlP5.*;
+ControlP5 cp5;
+Serial port;
+float Es;
+int matriz[][]={
+  {170, 67}, 
+  {180, 80}, 
+  {170, 65}, 
+  {178, 75}, 
+  {160, 55}, 
+  {163, 60}, 
+  {165, 63}, 
+  {170, 70}, 
+  {164, 62}, 
+  {176, 77}, 
+  {164, 60}, 
+  {170, 76}, 
+  {170, 56}, 
+  {168, 60}, 
+};
+float auxEs=0;
+float Peso1;
+float Peso;
+int aux=0;
+void setup() {
+  port= new Serial(this, "COM10", 9600);
+  size(800, 800); // pantalla
+  background(#3C8180); //color de fondo RGB
+  cp5=new ControlP5(this);
+  textSize(80);
+  cp5.addButton("LINEAL")
+    .setPosition(180, 200)
+    .setSize(200, 100)
+    .setColorBackground(#243BFF)//COLOR AZUL
+    .setColorActive(#E8F53E)
+    .setColorForeground(#E8F53E)
+    .getCaptionLabel()
+    .setFont(createFont("Arial", 15))
+    .toUpperCase(false)
+    .setText("LINEAL")
+    .align(ControlP5.CENTER, ControlP5.CENTER).setPaddingX(0)
+    ;
+  cp5.addButton("EXPONENCIAL")
+    .setPosition(420, 200)
+    .setSize(200, 100)
+    .setColorBackground(#243BFF)//COLOR AZUL
+    .setColorActive(#E8F53E)
+    .setColorForeground(#E8F53E)
+    .getCaptionLabel()
+    .setFont(createFont("Arial", 15))
+    .toUpperCase(false)
+    .setText("EXPONENCIAL")
+    .align(ControlP5.CENTER, ControlP5.CENTER).setPaddingX(0)
+    ;
+  textSize(40);
+  fill(255, 0, 0);
+  text("CALCULO DE PESO", 230, 60);
+}
+void serialEvent(Serial port) {
+  Es=port.read();
+  auxEs=int(Es); 
+  println("Estatura=");
+  println(Es);
+  Peso=Es*(1.1797)-133.39;
+  Peso1=3.43*exp(0.0175*Es);
+  println("Peso=");
+  println(Peso);
+}
+void draw() {
+  if (Peso>0) {
+    stroke(0);
+    strokeWeight(2);
+    fill(#03FF69);
+    ellipse((Es*15)-2150, 810-(Peso)*5, 10, 10);
+  }
+}
+public void LINEAL() {
+  background(#288E75);
+  textSize(40);
+  fill(255, 0, 0);
+  text("REGRESION LINEAL", 170, 60);
+  textSize(20);
+  fill(255);
+  text("El modelo lineal es: y= 1.18x - 133.39", 150, 350);
+  textSize(20);
+  fill(255);
+  text("Su peso debe ser: "+Peso+"Kg", 200, 380);
+
+  stroke(0);
+  strokeWeight(1);
+
+  //LINEAS DE LOS CUADRANTES 
+  rect(200, 400, 450, 360);
+  line(200, 400, 200, 760);
+  line(200, 760, 650, 760);
+  line(200, 400, 650, 400);
+
+  //LINES VERTICALES
+
+  stroke(0);
+  strokeWeight(1);
+  line(250, 400, 250, 760);
+  line(400, 400, 400, 760);
+  line(550, 400, 550, 760);
+  line(650, 400, 650, 760);
+  //LINEAS HORIZONTALES
+  fill(0);
+  stroke(0);
+
+  line(200, 410, 650, 410);
+  line(200, 460, 650, 460);
+  line(200, 510, 650, 510);
+  line(200, 560, 650, 560);
+  line(200, 610, 650, 610);
+  line(200, 660, 650, 660);
+  line(200, 710, 650, 710);
+  line(200, 760, 650, 760);
+
+  stroke(255, 0, 0);
+  strokeWeight(2);
+  fill(#FF030B);
+  for (int col=0; col<14; col++) {
+    ellipse((matriz[col][0]*15)-2150, 810-matriz[col][1]*5, 5, 5);
+  }
+  textSize(20);
+  fill(0);
+  text("0", 180, 760);
+  text("20", 170, 710);
+  text("30", 170, 660);
+  text("40", 170, 610);
+  text("50", 170, 560);
+  text("60", 170, 510);
+  text("70", 170, 460);
+  text("80", 170, 410);
+
+  text("150", 180, 780);
+  text("160", 235, 780);
+  text("170", 385, 780);
+  text("180", 535, 780);
+  text("190", 635, 780);
+
+  if (Peso>0) {
+    stroke(0);
+    strokeWeight(2);
+    fill(#03FF69);
+    ellipse((Es*15)-2150, 810-(Peso)*5, 10, 10);
+  }
+  stroke(0, 0, 255);
+  strokeWeight(1);
+  line(160*15-2200, 760-43.565*5, (190*15)-2200, 852-90.753*5);
+}
+
+public void EXPONENCIAL() {
+  background(#288E75);
+  textSize(40);
+  fill(255, 0, 0);
+  text("REGRESION EXPONENCIAL", 170, 60);
+  textSize(20);
+  fill(255);
+  text("El modelo Exponencial es: y= (3.43)*exp(0.0175*x)", 150, 350);
+  textSize(20);
+  fill(255);
+  text("Su peso debe ser: "+Peso1+"Kg", 200, 380);
+
+  stroke(0);
+  strokeWeight(1);
+
+  //LINEAS DE LOS CUADRANTES 
+  rect(200, 400, 450, 360);
+  line(200, 400, 200, 760);
+  line(200, 760, 650, 760);
+  line(200, 400, 650, 400);
+
+  //LINES VERTICALES
+
+  stroke(0);
+  strokeWeight(1);
+  line(250, 400, 250, 760);
+  line(400, 400, 400, 760);
+  line(550, 400, 550, 760);
+  line(650, 400, 650, 760);
+  //LINEAS HORIZONTALES
+  fill(0);
+  stroke(0);
+
+  line(200, 410, 650, 410);
+  line(200, 460, 650, 460);
+  line(200, 510, 650, 510);
+  line(200, 560, 650, 560);
+  line(200, 610, 650, 610);
+  line(200, 660, 650, 660);
+  line(200, 710, 650, 710);
+  line(200, 760, 650, 760);
+
+  stroke(255, 0, 0);
+  strokeWeight(2);
+  fill(#FF030B);
+  for (int col=0; col<14; col++) {
+    ellipse((matriz[col][0]*15)-2150, 810-matriz[col][1]*5, 5, 5);
+  }
+  textSize(20);
+  fill(0);
+  text("0", 180, 760);
+  text("20", 170, 710);
+  text("30", 170, 660);
+  text("40", 170, 610);
+  text("50", 170, 560);
+  text("60", 170, 510);
+  text("70", 170, 460);
+  text("80", 170, 410);
+
+  text("150", 180, 780);
+  text("160", 235, 780);
+  text("170", 385, 780);
+  text("180", 535, 780);
+  text("190", 635, 780);
+
+  if (Peso>0) {
+    stroke(0);
+    strokeWeight(2);
+    fill(#03FF69);
+    ellipse((Es*15)-2150, 810-(Peso)*5, 10, 10);
+  }
+  stroke(0, 0, 255);
+  strokeWeight(1);
+  line(160*15-2200, 760-43.565*5, (190*15)-2200, 852-90.753*5);
+}
