@@ -1,0 +1,81 @@
+/*
+ * DEYLAN LEMA
+ * CITEL
+ * TELECOMUNICACIONES
+ * 5TO "A"
+ */
+
+ #include"dataset.h"
+ #include "funcionesKNN.h"
+ #define CO 4
+ double dato[CO];
+ long actual =0, previo=0;
+
+ //----------EXTRAE CARACTERES DADOS LOS IDENTIFICADORES Y LOS CONVIERTE A DOUBLE
+ void extraeDatos(String str,double  dato[], char dlm[]){
+  String auxstr = "";
+  int posdlm[5], tamstr=0;
+  int i=0, j=0;
+
+  //buscar caracteres de identificacion 
+  posdlm[0] = str.indexOf(dlm[0]); //{
+  posdlm[1] = str.indexOf(dlm[1]);//,
+  posdlm[2] = str.indexOf(dlm[1], posdlm[1] +1);//,
+  posdlm[3] = str.indexOf(dlm[1], posdlm[2] +1);//,
+  posdlm[4] = str.indexOf(dlm[2]);//}
+
+  for(j=0; j<CO; j++){
+    //extraer datos numericos
+    for(i=posdlm[j]+1;i<posdlm[j+1];i++){
+      auxstr= auxstr + str[i];
+    }
+    //convertir a  double
+    int y= auxstr.length();
+    char buf[y+1];
+    auxstr.toCharArray(buf,y+1);
+    dato[j] = atof(buf);
+
+    //serial.println(dato[j],3);
+    auxstr="";
+  }
+ }
+
+ //-------------------- IMPRESION DE CONFIRMACION-------------------
+ void imprime(double dato[], int clase){
+  Serial.println("-------------------------------------------");
+  Serial.println(">> Clase: "); Serial.println(clasesSt[clase]);
+ }
+
+ void setup(){
+  Serial.begin(9600);
+  delay(1000);
+  Serial.println("=================================================");
+  Serial.println("=========     Clasificacion con Knn         =====");
+  Serial.println("=================================================");
+  delay(500);
+ }
+
+void loop(){
+  if(Serial.available()){
+  String str = Serial.readStringUntil('\n');
+  extraeDatos(str, dato, "(,)");
+
+  //tic
+  previo=millis();
+
+  //encontrar la clase, con 5 vecinos cercanos
+  int cl = clasificaKNN(atributos, clasesNo, dato, 3);
+
+  //tac
+  actual=millis();
+
+  //imprimir
+  imprime(dato, cl);
+  Serial.print("Tiempo: ");
+  Serial.print(actual-previo);
+  Serial.println("mS");
+   
+  }
+}
+ 
+ 
