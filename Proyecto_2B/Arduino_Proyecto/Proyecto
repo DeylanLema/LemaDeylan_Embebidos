@@ -1,0 +1,115 @@
+ #include<LiquidCrystal_I2C.h>
+ LiquidCrystal_I2C lcd(0x27,16,2);
+
+
+ #include <HardwareSerial.h>
+ #include <math.h>
+ #include"dataset.h"
+ #include "metodosKNN.h"
+ #define CO 2
+ double dato[CO];
+ long actual =0, previo=0;
+ const int potPin1=A0;
+const int potPin2=A1;
+
+//funciones para el computo del algoritmo KN
+#define FI 200
+#define CO 2
+
+//----------EXTRAE CARACTERES DADOS LOS IDENTIFICADORES Y LOS CONVIERTE A DOUBLE
+ void extraeDatos(String str, double dato[], char dlm[]){
+  String auxstr = "";
+  int posdlm[3], tamstr=0;
+  int i=0, j=0;
+
+  //buscar caracteres de identificacion 
+  posdlm[0] = str.indexOf(dlm[0]); //{
+  posdlm[1] = str.indexOf(dlm[1]);//,
+  posdlm[2] = str.indexOf(dlm[2]);//}
+
+  for(j=0; j<CO; j++){
+    //extraer datos numericos
+    for(i=posdlm[j]+1;i<posdlm[j+1];i++){
+      auxstr= auxstr + str[i];
+    }
+    //convertir a  double
+    int y= auxstr.length();
+    char buf[y+1];
+    auxstr.toCharArray(buf,y+1);
+    dato[j] = atof(buf);
+
+    //serial.println(dato[j],3);
+    auxstr="";
+  }
+ }
+
+//-------------------- IMPRESION DE CONFIRMACION-------------------
+ void imprime(double dato[], int clase){
+  lcd.clear();
+  lcd.setCursor(0,1);  // ubicarse en la lcd
+  lcd.print(clasesSt[clase]);   //envia mensaje
+  lcd.setCursor(0,0);
+  lcd.print(nomAtr[0]+String(":")+String(dato[0],0)+String(" ")+String(nomAtr[1])+String(":")+String(dato[1],0));
+  delay(5000);
+  lcd.clear();
+ }
+
+ void setup(){
+  lcd.init();
+  lcd.backlight();
+  lcd.clear();
+  lcd.setCursor(0,0);
+  lcd.print("DETECTOR DE "); // Mensaje a despegar
+  lcd.setCursor(0,1);
+  lcd.print("CO2 Y NOX ");
+  delay(4000);  
+  Serial.begin(9600);
+ }
+
+void loop(){
+   
+  String str = ""; // variable movimientos para almacenar la lectura de sensores
+   str += '{'; //Agregar una llave a la variable str
+  str += analogRead(potPin1); // Leer el valor del pin de la entrada analógica 0 y  agregar a la variable str
+  str  += ','; // Agregar una coma a la variable str para separar los valores de los dos pines
+  str += analogRead(potPin2); // Leer el valor del pin de la entrada analógica 1 y lo agrega a la variable str
+   str += '}'; //Agregar una llave final a la variable str
+     str +='\n';//espacio de dato
+   String movimientos = ""; 
+  movimientos += analogRead(potPin1); 
+  movimientos += '-'; 
+  movimientos += analogRead(potPin2);
+  Serial.println(movimientos); 
+  delay(1000);
+   extraeDatos(str, dato, "{,}");
+
+  //encontrar la clase, con 5 vecinos cercanos
+  int cl = clasificaKNN(atributos, clasesNo, dato, 11);
+
+  //imprimir
+  imprime(dato, cl);
+ 
+//  if(Serial.available()){
+//    
+//  //tic
+//  previo=millis();
+//  
+//  String str = Serial.readStringUntil('\n');
+//  extraeDatos(str, dato, "{,}");
+//
+//  //encontrar la clase, con 5 vecinos cercanos
+//  int cl = clasificaKNN(atributos, clasesNo, dato, 11);
+//
+//  //tac
+//  actual=millis();
+//
+//  //imprimir
+//  imprime(dato, cl);
+//  Serial.print("Tiempo: ");
+//  Serial.print(actual-previo);
+//  Serial.println("mS");   
+//  }
+}
+
+
+ 
